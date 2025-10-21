@@ -1,0 +1,40 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.ipynb_checkpoints
+
+# --- Environments ---
+.env
+.venv/
+venv/
+ENV/
+env/
+anacondaprojects/
+*.DS_Store
+notebooks/anaconda_projects/
+
+# --- Anaconda / Jupyter Auto-Folders ---
+**/anaconda_projects/
+**/.virtual_documents/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# --- Data files ---
+data/raw/
+data/processed/
+*.csv
+*.xlsx
+*.gz
+
+# --- System / IDE ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- Other ---
+*.log
