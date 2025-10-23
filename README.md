@@ -90,18 +90,18 @@ This is a **proof-of-concept** demonstrating the analysis pipeline:
 - ✅ User input processing
 
 ### Roadmap (Future Iterations)
-**Phase 2 (Weeks 5-6):**
+**Phase 2:**
 - Add interactive visualizations (neighborhood comparison charts, price trend graphs)
 - Manual example listings from Zillow (2-3 properties per recommended neighborhood)
 - Streamlit web interface (no coding required to use the tool)
 
-**Phase 3 (Months 2-3):**
+**Phase 3:**
 - Expand to Houston, Dallas, San Antonio
 - Add financing scenario calculator (different down payments, interest rates)
 - Include off-market deal sources (wholesalers, foreclosures)
 - Property condition assessment (turnkey vs. rehab required)
 
-**Phase 4 (Months 4-6):**
+**Phase 4:**
 - Real-time MLS integration
 - Automated listing alerts when new opportunities match criteria
 - Portfolio optimization (suggest best mix of neighborhoods for diversification)
@@ -185,5 +185,5 @@ This project is open source and available for educational and personal use. Data
 
 ---
 
-**Last Updated:** October 21, 2025  
+**Last Updated:** October 22, 2025  
 **Status:** MVP Complete — Visualization & UI phases in progress
