@@ -90,7 +90,7 @@ This is a **proof-of-concept** demonstrating the analysis pipeline:
 - ✅ User input processing
 
 ### Roadmap (Future Iterations)
-**Phase 2:**
+**Phase 2:(in process)**
 - Add interactive visualizations (neighborhood comparison charts, price trend graphs)
 - Manual example listings from Zillow (2-3 properties per recommended neighborhood)
 - Streamlit web interface (no coding required to use the tool)
