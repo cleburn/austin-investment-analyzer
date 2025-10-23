@@ -82,7 +82,7 @@ with col2:
 st.markdown("---")
 
 
-if analyze_button:  # Remove "or True" later - this makes it auto-run for testing
+if analyze_button:
 
     # Filter by budget
     budget_filtered = df[
@@ -188,10 +188,11 @@ if analyze_button:  # Remove "or True" later - this makes it auto-run for testin
                 st.write(f"**Down Payment (20%):** ${down_payment:,.0f}")
     
                 # Calculate occupancy rate from listing data
-                # (This is estimated - true occupancy is in Airbnb data but not saved)
-                if row['listing_count'] > 10:
-                    estimated_occupancy = 65  # Industry average for Austin STR
-                    st.write(f"**Est. Occupancy:** {estimated_occupancy}%")
+                # Display occupancy rate (neighborhood-specific data)
+                if pd.notna(row.get('occupancy_rate')) and row['occupancy_rate'] > 0:
+                    st.write(f"**Occupancy Rate:** {row['occupancy_rate']:.1f}%")
+                else:
+                    st.write(f"**Est. Occupancy:** 62% (Austin avg)")
 
 else:
     st.info("👈 Set your investment criteria in the sidebar and click 'Find Best Neighborhoods'")
