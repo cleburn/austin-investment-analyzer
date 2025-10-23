@@ -1,6 +1,54 @@
-# Texas Real Estate Investment Analyzer
+# 🏠 Austin Real Estate Investment Analyzer
 
 **AI-powered tool that helps real estate investors identify the best neighborhoods in Austin based on cash flow potential and appreciation metrics.**
+
+---
+
+## 📋 Table of Contents
+
+1. [Try It Now](#-try-it-now)
+2. [The Problem](#-the-problem)
+3. [What It Does](#-what-it-does)
+4. [How It Works](#-how-it-works)
+5. [Key Insights](#-key-insights-from-current-data)
+6. [Example Visualizations](#-example-visualizations)
+7. [What's Next](#-whats-next)
+8. [Technical Stack](#️-technical-stack)
+9. [Project Structure](#-project-structure)
+10. [Background](#-background)
+11. [Contact & Collaboration](#-contact--collaboration)
+12. [License](#-license)
+
+---
+
+## 🚀 Try It Now
+
+**No coding required to USE this tool** - just follow these simple steps:
+
+### Quick Start (5 minutes)
+
+1. **Clone the repository:**
+```bash
+   git clone https://github.com/cleburn/austin-investment-analyzer.git
+   cd austin-investment-analyzer
+```
+
+2. **Install dependencies:**
+```bash
+   pip install streamlit pandas numpy
+```
+
+3. **Run the web app:**
+```bash
+   streamlit run app.py
+```
+
+4. **Use the tool:**
+   - The app will open automatically in your browser at `http://localhost:8501`
+   - Adjust your budget range, investment strategy, and rental type in the sidebar
+   - Click "Find Best Neighborhoods" to see your top 3 recommendations
+
+**Note:** Web deployment coming soon - this will allow you to access the tool via a simple link without any installation.
 
 ---
 
@@ -80,20 +128,39 @@ Only neighborhoods with **10+ Airbnb listings** are included (ensures reliable d
 
 ---
 
+## 📈 Example Visualizations
+
+The tool generates comprehensive visualizations to help investors understand market trends:
+
+### Austin Metro Price Trends (2000-2025)
+Shows the complete price trajectory of the Austin metro area, highlighting:
+- Pre-pandemic steady growth (2015-2019)
+- COVID boom and 2022 peak
+- Current market correction and stabilization
+
+### Top 10 Neighborhoods - Cash Flow Comparison
+Compares monthly cash flow potential across the highest-performing neighborhoods for both:
+- Short-term rentals (STR/Airbnb)
+- Long-term rentals (LTR)
+
+### Top 10 Neighborhoods - Appreciation Potential
+Ranks neighborhoods by historical growth rates (2015-2019 baseline CAGR), showing which areas have the strongest long-term appreciation track records.
+
+**All charts are automatically saved to the `/visuals` folder when you run the analysis.**
+
+---
+
 ## 🚀 What's Next
 
-### Current Version (MVP)
-This is a **proof-of-concept** demonstrating the analysis pipeline:
+### Current Version (MVP - Complete)
+This proof-of-concept demonstrates the full analysis pipeline:
 - ✅ Data ingestion and cleaning
 - ✅ Neighborhood-level metrics calculation
 - ✅ Strategy-based ranking system
-- ✅ User input processing
+- ✅ Interactive web interface (Streamlit)
+- ✅ Data visualizations
 
-### Roadmap (Future Iterations)
-**Phase 2:(in process)**
-- Add interactive visualizations (neighborhood comparison charts, price trend graphs)
-- Manual example listings from Zillow (2-3 properties per recommended neighborhood)
-- Streamlit web interface (no coding required to use the tool)
+### Roadmap (Future Phases)
 
 **Phase 3:**
 - Expand to Houston, Dallas, San Antonio
@@ -105,6 +172,7 @@ This is a **proof-of-concept** demonstrating the analysis pipeline:
 - Real-time MLS integration
 - Automated listing alerts when new opportunities match criteria
 - Portfolio optimization (suggest best mix of neighborhoods for diversification)
+- Mobile-responsive design and cloud deployment
 
 ---
 
@@ -116,29 +184,32 @@ This is a **proof-of-concept** demonstrating the analysis pipeline:
 - NumPy (numerical calculations)
 
 **Analysis:**
-- Scikit-learn (future: predictive modeling)
-- SciPy (statistical metrics)
+- Statistical modeling for cash flow projections
+- Time-series analysis for appreciation trends
 
-**Visualization (coming soon):**
-- Matplotlib & Seaborn (charts)
-- Plotly (interactive dashboards)
+**Visualization:**
+- Matplotlib & Seaborn (static charts)
+- Streamlit (interactive web interface)
 
-**Deployment (coming soon):**
-- Streamlit (web interface)
-- GitHub Pages (portfolio hosting)
+**Deployment:**
+- Local deployment (current)
+- Streamlit Cloud (planned)
 
 ---
 
 ## 📁 Project Structure
-
 ```
 austin-investment-analyzer/
+├── app.py                                # Streamlit web interface
 ├── notebooks/
 │   └── texas-real-estate-analyzer.ipynb  # Main analysis notebook
 ├── data/
 │   ├── raw/                              # Original datasets (not in Git)
 │   └── processed/                        # Cleaned data (not in Git)
-├── visuals/                              # Charts and graphs (coming soon)
+├── visuals/                              # Generated charts and graphs
+│   ├── austin_metro_price_trends.png
+│   ├── top_neighborhoods_cashflow.png
+│   └── top_neighborhoods_appreciation.png
 ├── .gitignore
 └── README.md
 ```
@@ -166,16 +237,18 @@ This ensures recommendations remain viable even in less-than-ideal market condit
 
 ---
 
-## 📬 Contact & Feedback
+## 📬 Contact & Collaboration
 
 **Cleburn Walker**  
-[LinkedIn](https://linkedin.com/in/cleburnwalker) | [GitHub](https://github.com/cleburn)
+📧 [cleburn.walker@gmail.com](mailto:cleburn.walker@gmail.com)  
+💼 [LinkedIn](https://linkedin.com/in/cleburnwalker)  
+💻 [GitHub](https://github.com/cleburn)
 
-**For Investors:**  
-Interested in using this tool or exploring collaboration? Let's connect.
+### For Investors & Partners:
+Interested in scaling this tool to additional markets or exploring commercial partnerships? Let's connect. This MVP demonstrates the potential for a full-featured platform serving real estate investors nationwide.
 
-**For Developers:**  
-Feedback, contributions, and suggestions welcome. This is an active learning project.
+### For Developers:
+Feedback, contributions, and collaboration welcome. This is an active learning project and I'm open to suggestions for improvement or new features.
 
 ---
 
@@ -185,5 +258,5 @@ This project is open source and available for educational and personal use. Data
 
 ---
 
-**Last Updated:** October 22, 2025  
-**Status:** MVP Complete — Visualization & UI phases in progress
+**Last Updated:** October 23, 2025  
+**Status:** Phase 2 Complete — MVP with web interface deployed locally

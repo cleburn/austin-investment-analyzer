@@ -38,3 +38,6 @@ data/processed/
 
 # --- Other ---
 *.log
+
+# Streamlit
+.streamlit/
