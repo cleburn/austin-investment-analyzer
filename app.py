@@ -17,12 +17,10 @@ st.markdown("---")
 def load_data():
     """Load and process all datasets"""
 
-    # Load processed data (you should have this CSV from your notebook)
-    # If you don't have a single merged CSV, you'll need to re-run your
-    # notebook merge logic here
+    
 
     try:
-        # Option A: If you saved your final dataframe
+        
         df_final = pd.read_csv('data/processed/final_neighborhoods.csv')
         return df_final
 
