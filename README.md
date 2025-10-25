@@ -26,7 +26,7 @@
 
 ### 🌐 Use the Live App (Recommended)
 
-**[👉 Launch the Austin Investment Analyzer](https://your-app-url-here.streamlit.app)**
+**[👉 Launch the Austin Investment Analyzer](https://austin-investment-analyzer.streamlit.app/)**
 
 No installation required - just click and start analyzing neighborhoods!
 
@@ -294,5 +294,5 @@ This project is open source and available for educational and personal use. Data
 
 ---
 
-**Last Updated:** October 23, 2025  
-**Status:** Phase 2 Complete — MVP with web interface deployed locally
+**Last Updated:** October 25, 2025  
+**Status:** Phase 2 Complete — MVP deployed to Streamlit Cloud
