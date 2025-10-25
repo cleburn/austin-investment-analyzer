@@ -24,9 +24,17 @@
 
 ## 🚀 Try It Now
 
-**No coding required to USE this tool** - just follow these simple steps:
+### 🌐 Use the Live App (Recommended)
 
-### Quick Start (5 minutes)
+**[👉 Launch the Austin Investment Analyzer](https://your-app-url-here.streamlit.app)**
+
+No installation required - just click and start analyzing neighborhoods!
+
+---
+
+### 💻 Or Run Locally
+
+**If you want to explore the code or run it on your own machine:**
 
 1. **Clone the repository:**
 ```bash
@@ -48,8 +56,6 @@
    - The app will open automatically in your browser at `http://localhost:8501`
    - Adjust your budget range, investment strategy, and rental type in the sidebar
    - Click "Find Best Neighborhoods" to see your top 3 recommendations
-
-**Note:** Web deployment coming soon - this will allow you to access the tool via a simple link without any installation.
 
 ---
 
@@ -80,6 +86,7 @@ Then it:
   - Current market position (distance from 2022 peak)
   - Confidence indicators (number of comparable listings)
 
+**Note:** The web app focuses on delivering fast, personalized recommendations. The full exploratory analysis, methodology documentation, and market trend visualizations are available in the `/notebooks` and `/visuals` folders of this repository.
 ---
 
 ## 🔍 How It Works

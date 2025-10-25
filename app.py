@@ -102,7 +102,8 @@ if analyze_button:
         sort_column = 'baseline_cagr'
 
     # Get top 3
-    top_3 = budget_filtered.sort_values(sort_column, ascending=False).head(3)
+    top_3 = budget_filtered.sort_values(sort_column, ascending=False).head(3).reset_index(drop=True)
+    top_3['rank'] = range(1, len(top_3) + 1)
 
     # Summary stats
     col1, col2, col3, col4 = st.columns(4)
@@ -128,10 +129,17 @@ if analyze_button:
     # Display results
     st.subheader(f"🎯 Top 3 Neighborhoods for {strategy} ({rental_code})")
 
-    for rank, (idx, row) in enumerate(top_3.iterrows(), 1):
-        with st.expander(f"#{rank}: {row['RegionName']}", expanded=(rank==1)):
-
+    for idx, row in top_3.head(3).iterrows():
+        neighborhood = row['neighborhood']
+    
+        with st.expander(f"#{row['rank']} - {neighborhood}", expanded=True):
+        
+            # Zillow search link
+            st.markdown(f"🔍 **[Search Zillow for properties](https://www.zillow.com/austin-tx/)** → Search: **{neighborhood}**")
+            st.markdown("---")
+        
             col1, col2, col3 = st.columns(3)
+            # ... rest of your code
 
             with col1:
                 st.metric(
