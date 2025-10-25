@@ -7,10 +7,16 @@ from datetime import datetime
 st.set_page_config(
     page_title="Austin Investment Analyzer",
     page_icon="🏠",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 st.title("🏠 Austin Real Estate Investment Analyzer")
+
+if st.sidebar:
+    st.info("📱 **Mobile users:** Tap the **>>** arrow in the top-left to open filters")
+
+
 st.markdown("---")
 
 @st.cache_data
