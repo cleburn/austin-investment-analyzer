@@ -30,6 +30,11 @@
 
 No installation required - just click and start analyzing neighborhoods!
 
+### 📱 Mobile Compatibility
+- ✅ Chrome (Android & iOS): Full support
+- ⚠️ Safari (iOS): If app doesn't load, use Chrome or desktop view
+- ✅ Desktop: All browsers supported
+
 ---
 
 ### 💻 Or Run Locally

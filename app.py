@@ -18,16 +18,12 @@ st.markdown("---")
 @st.cache_data
 def load_data():
     """Load and process all datasets"""
-
-    
-
     try:
-        
         df_final = pd.read_csv('data/processed/final_neighborhoods.csv')
         return df_final
-
-    except FileNotFoundError:
-        st.error("Data file not found. Please run the Jupyter notebook first to generate processed data.")
+    except Exception as e:
+        st.error(f"❌ Error loading data: {str(e)}")
+        st.error("If using Safari, please try Chrome browser for best experience.")
         st.stop()
 
 # Load data
