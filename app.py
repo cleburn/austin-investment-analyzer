@@ -13,10 +13,6 @@ st.set_page_config(
 
 st.title("🏠 Austin Real Estate Investment Analyzer")
 
-if st.sidebar:
-    st.info("📱 **Mobile users:** Tap the **>>** arrow in the top-left to open filters")
-
-
 st.markdown("---")
 
 @st.cache_data
