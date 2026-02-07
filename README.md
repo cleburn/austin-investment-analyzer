@@ -1,8 +1,8 @@
-# Real Estate Investment Analyzer v2.1
+# Real Estate Investment Analyzer v2.2
 
 **AI-powered tool that helps real estate investors identify the best neighborhoods in Texas and Florida based on cash flow potential and appreciation metrics.**
 
-**Version 2.1** introduces machine learning predictions with 99.7% accuracy, trained on 25 years of housing data across 12 metro areas and 3,000+ neighborhoods.
+**Version 2.2** introduces forward-validated ML predictions with 97.4% accuracy, trained on 25 years of housing data across 11 metro areas and 3,000+ neighborhoods.
 
 ---
 
@@ -89,7 +89,7 @@ The analyzer takes your inputs:
 6. **Hold Period** (Investment timeframe for ROI calculations)
 
 Then it:
-- Analyzes 3,000+ neighborhoods across 12 metros
+- Analyzes 3,000+ neighborhoods across 11 metros
 - Ranks them based on your chosen strategy
 - Returns the **top 5 neighborhoods** with comprehensive metrics:
   - Monthly cash flow (STR and LTR with realistic rent estimates)
@@ -106,14 +106,14 @@ Then it:
 ### Coverage
 
 **Texas Metros:**
-- Austin, Houston (with suburbs), Dallas (with suburbs), Fort Worth (with suburbs), San Antonio, Abilene, Waco
+- Austin, Houston (with suburbs), Dallas (with suburbs), Fort Worth (with suburbs), San Antonio, Waco
 
 **Florida Metros:**
 - Miami, Fort Lauderdale, Orlando, Tampa, Jacksonville
 
 **STR Data Availability:**
 - Full STR analysis: Austin, Dallas, Fort Worth, Fort Lauderdale
-- LTR-only analysis: Houston, San Antonio, Abilene, Waco, Miami, Orlando, Tampa, Jacksonville
+- LTR-only analysis: Houston, San Antonio, Waco, Miami, Orlando, Tampa, Jacksonville
 
 ### Data Sources
 The tool combines three public datasets to create a complete picture:
@@ -139,7 +139,7 @@ For each neighborhood, the tool calculates:
 - **Total ROI:** `(Cash Flow + Equity + Appreciation) / Initial Investment`
 
 **Appreciation Strategy Metrics:**
-- **ML-predicted appreciation (v2.1):** Per-metro models with 99.7% accuracy trained on 25 years of data
+- **ML-predicted appreciation (v2.2):** RandomForest model with 97.4% accuracy trained on 25 years of data
 - Historical CAGR fallback for neighborhoods without ML coverage
 - Distance from 2022 market peak (shows potential upside)
 
@@ -165,31 +165,36 @@ Neighborhoods are ranked by the metric that matters most to your strategy:
 
 **Multi-Metro Market Reality (as of December 2025):**
 - **Rent-to-price ratios vary significantly by market** - Texas markets range from 0.55-0.95% monthly; Florida markets from 0.40-0.80%
-- **Smaller markets offer better cash flow** - Abilene and Waco show positive cash flow opportunities at lower price points
+- **Smaller markets offer better cash flow** - Waco and smaller Texas markets show positive cash flow opportunities at lower price points
 - **Tax benefits change the picture** - After accounting for mortgage interest deduction, depreciation, and operating expense deductions, many neighborhoods become cash-flow positive
 - **Property taxes vary by county** - Texas ranges from 2.1-2.4%; Florida from 1.6-2.0%
 - **Insurance costs differ by region** - Florida averages 1.0-1.2% (hurricane risk); Texas averages 0.5-0.7%
 
 **Market Stats:**
-- **Metros analyzed:** 12 (7 Texas, 5 Florida)
+- **Metros analyzed:** 11 (6 Texas, 5 Florida)
 - **Neighborhoods analyzed:** 3,000+
 - **STR data available:** 4 metros (Austin, Dallas, Fort Worth, Fort Lauderdale)
 - **Data through:** December 2025
 
-**Key Takeaway:** v2.0 reveals that investment viability varies significantly by metro. While major markets like Austin and Miami show challenging pre-tax cash flow, smaller Texas markets and strategic suburbs offer better opportunities. Budget flexibility (down to $50K) unlocks positive cash flow in markets like Abilene.
+**Key Takeaway:** v2.0 reveals that investment viability varies significantly by metro. While major markets like Austin and Miami show challenging pre-tax cash flow, smaller Texas markets and strategic suburbs offer better opportunities. Budget flexibility and favorable financing terms unlock positive cash flow in markets like Waco and San Antonio.
 
 ---
 
 ## What's Next
 
-### Current Version (v2.1 - AI-Powered Predictions)
-**New in v2.1:**
-- Machine learning model with 99.7% prediction accuracy
-- Per-metro models trained on 25 years of housing data (2000-2025)
-- AI-derived appreciation rates replace static historical averages
+### Current Version (v2.2 - Forward-Validated Predictions)
+**New in v2.2:**
+- Forward-validated against Dec 2025 actuals (2.57% MAPE)
+- Removed Abilene metro (insufficient sample size for reliable predictions)
+- Established monthly forward-validation protocol for ongoing model monitoring
+
+**v2.1 Foundation:**
+- RandomForest model with 97.4% accuracy across 11 metros
+- Single model trained on 25 years of housing data (2000-2025)
+- ML-derived appreciation rates replace static historical averages
 
 **v2.0 Foundation:**
-- Multi-metro support: 12 metros across Texas and Florida
+- Multi-metro support: 11 metros across Texas and Florida
 - 3,000+ neighborhoods with metro-specific tax and insurance rates
 - Hierarchical location filtering (state -> metros)
 
@@ -215,13 +220,13 @@ Neighborhoods are ranked by the metric that matters most to your strategy:
 - Pandas, NumPy (data manipulation)
 - PyYAML (configuration management)
 
-**Machine Learning (v2.1):**
-- Scikit-learn, XGBoost (per-metro regression models)
-- 50,000+ training examples from 2005-2025
-- 80/20 train-test split with stratification
+**Machine Learning (v2.2):**
+- Scikit-learn (RandomForest regression model)
+- 36,000+ training examples from 2002-2024
+- 80/20 train-test split, forward-validated on unseen months
 
 **Analysis:**
-- Per-metro ML models for appreciation prediction
+- Single ML model for appreciation prediction across all metros
 - Statistical modeling for cash flow projections
 - Time-series analysis (25 years of data)
 
@@ -254,6 +259,6 @@ This project is open source and available for educational and personal use. Data
 
 ---
 
-**Last Updated:** January 1, 2026
-**Version:** 2.1
-**Status:** Production - AI-powered predictions with 99.7% accuracy
+**Last Updated:** February 6, 2026
+**Version:** 2.2
+**Status:** Production - ML predictions with 97.4% accuracy (2.57% MAPE)

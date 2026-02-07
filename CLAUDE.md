@@ -36,7 +36,7 @@
 
 ---
 
-## Project Status (Updated Jan 2026)
+## Project Status (Updated Feb 2026)
 
 ### Overview
 Real estate investment analysis app with ML-powered appreciation predictions. Helps users identify neighborhoods with strong ROI potential across Texas and Florida metros.
@@ -50,10 +50,10 @@ Real estate investment analysis app with ML-powered appreciation predictions. He
 - **Min History**: 24 months of price data required
 - **Features**: 14 features including cagr_2yr (not 3yr/5yr due to lookback constraint)
 
-**Forward Validation (November 2025):**
-- **MAPE**: 2.63% (excellent)
+**Forward Validation (December 2025):**
+- **MAPE**: 2.57% (excellent, consistent with Nov 2025 validation of 2.63%)
 - **R²**: 0.99
-- **Coverage**: 3,684 neighborhoods with predictions
+- **Coverage**: 4,172 neighborhoods with predictions
 
 **Appreciation Derivation:**
 ```
@@ -120,28 +120,30 @@ app.py (uses predictions for ROI calculations)
 
 ### Metros Supported
 
-**Training Groups (10):**
+**Training Groups (9):**
 - DFW (combined: dallas, fort_worth)
 - South Florida (combined: miami, fort_lauderdale)
-- austin, houston, san_antonio, waco, abilene
+- austin, houston, san_antonio, waco
 - tampa, orlando, jacksonville
 
-**Display Metros (12):**
-- dallas, fort_worth, austin, houston, san_antonio, waco, abilene
+**Display Metros (11):**
+- dallas, fort_worth, austin, houston, san_antonio, waco
 - miami, fort_lauderdale, tampa, orlando, jacksonville
+
+**Removed:** Abilene (Feb 2026) — only 11 neighborhoods, 7.90% MAPE in forward validation (3x worse than average). Too small a sample for reliable predictions.
 
 ### Known Limitations
 
-1. **29% fallback rate**: 856 neighborhoods use baseline_cagr instead of ML predictions due to naming differences between Zillow data and predictions
-2. **Price bounds**: Homes outside $170k-$1M don't get ML predictions
-3. **1-year horizon**: Model predicts 1 year ahead; multi-year is extrapolated with caps
+1. **Price bounds**: Homes outside $170k-$1M don't get ML predictions
+2. **1-year horizon**: Model predicts 1 year ahead; multi-year is extrapolated with caps
+3. **Fort Worth outliers**: Several Fort Worth neighborhoods show >20% prediction error; may need investigation when more data is available
 
 ### Future Enhancements (Deferred)
 
 - FRED economic data integration (interest rates, employment)
 - Confidence intervals for predictions
 - Multi-horizon models (3yr, 5yr direct prediction)
-- Improve neighborhood name matching for higher coverage
+- Longer-horizon forward validation (Jan-Mar 2026 data) to test model over 3+ month window before making model adjustments
 
 ### Design Decisions
 
@@ -152,23 +154,44 @@ app.py (uses predictions for ROI calculations)
 
 ---
 
-## Monthly Update Workflow
+## Monthly Forward-Validation Protocol
 
 When new Zillow ZHVI data is released:
 
+### Step 1: Forward-Validate Current Model
+Before updating the app data, test how well the existing model predicts the new actuals:
+
+1. Download new ZHVI file to `~/Downloads/`
+2. Run forward validation: extract features from the previous month's data, predict with Model C, compare to new month's actuals
+3. Evaluate overall metrics (MAPE, MAE, R²) and break down by metro and price tier
+4. Identify any metros or neighborhoods with degraded accuracy
+5. Decide: if model still performs well, proceed to update; if gaps emerge, investigate improvements first
+
+**Baseline benchmarks (Dec 2025 validation):**
+- Overall MAPE: 2.57%, R²: 0.9906
+- 87.5% of neighborhoods within 5% error
+- Weakest metro (excluding removed): Fort Lauderdale at 3.17% MAPE
+
+### Step 2: Update Data and Regenerate Predictions
 ```bash
-# 1. Download new ZHVI file from Zillow and save to:
-data/raw/zillow_zhvi_neighborhoods_updated.csv
+# 1. Copy new ZHVI file:
+cp ~/Downloads/Neighborhood_zhvi_*.csv data/raw/zillow_zhvi_neighborhoods.csv
 
-# 2. Open and run the notebook (all cells):
-notebooks/08_clean_pipeline_v2.ipynb
+# 2. Regenerate predictions (uses trained Model C + new data):
+#    Run prediction generation script with updated features
 
-# 3. Commit and push updated predictions:
-git add data/processed/appreciation_predictions_current.csv
+# 3. Regenerate neighborhood data:
+python process_data.py
+
+# 4. Commit and push:
+git add data/processed/appreciation_predictions_current.csv data/processed/neighborhoods_multi_metro.csv
 git commit -m "Update predictions with [Month Year] Zillow data"
 git push
 ```
 
 Streamlit Cloud will auto-redeploy with new predictions.
 
-**Note:** The model file (`price_model.joblib`) stays local - only the predictions CSV is pushed.
+**Note:** The model file (`price_model.joblib`) stays local - only the predictions CSV and neighborhood data are pushed.
+
+### Step 3: Plan for Longer-Horizon Validation (Next: Jan-Mar 2026)
+When 3+ months of new data are available, run a longer-horizon validation to assess model drift and make intentional adjustments to the model's architecture if needed.

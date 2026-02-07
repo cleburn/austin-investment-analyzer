@@ -1,5 +1,5 @@
 # Metro area configuration for Investment Analyzer v2.0
-# Last updated: December 2025
+# Last updated: February 2026
 
 version: "2.0"
 default_metro: "austin"
@@ -182,29 +182,6 @@ metros:
         rate: 0.0055  # 0.55%
 
     zillow_search_url: "https://www.zillow.com/fort-worth-tx/{neighborhood}/"
-
-  abilene:
-    display_name: "Abilene, TX"
-    state: "TX"
-    zillow_city: "Abilene"
-    zillow_metro: "Abilene, TX"
-    has_str_data: false
-    airbnb_file: null
-
-    property_tax_rate: 0.021  # 2.1% - Taylor County
-    insurance_rate: 0.005
-
-    ltr_tiers:
-      - max_price: 150000
-        rate: 0.0095  # 0.95%
-      - max_price: 250000
-        rate: 0.0085  # 0.85%
-      - max_price: 400000
-        rate: 0.0075  # 0.75%
-      - max_price: null
-        rate: 0.0065  # 0.65%
-
-    zillow_search_url: "https://www.zillow.com/abilene-tx/{neighborhood}/"
 
   waco:
     display_name: "Waco, TX"

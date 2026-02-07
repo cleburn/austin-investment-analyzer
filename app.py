@@ -971,15 +971,15 @@ st.markdown("---")
 
 with st.expander("What's New in v2.2?"):
     st.markdown("""
-    **v2.2 - Smarter Appreciation Predictions:**
-    - **98.9% Accuracy:** Appreciation predictions validated against actual market data
-    - **AI-Powered Forecasts:** Predicts future appreciation instead of assuming past trends continue
-    - **20 Years of Learning:** Model trained on housing outcomes from 2005-2024
+    **v2.2 - Forward-Validated Predictions:**
+    - **97.4% Accuracy:** Predictions validated against Dec 2025 actual market data (2.57% MAPE)
+    - **ML-Powered Forecasts:** Predicts future appreciation instead of assuming past trends continue
+    - **25 Years of Learning:** Model trained on housing outcomes from 2002-2024
 
-    **v2.1 - AI-Powered Price Predictions:**
-    - Machine learning model for price prediction with 99.7% accuracy
-    - 25 years of housing data (2000-2025) across all metros
-    - Per-metro models tuned for each market
+    **v2.1 - ML Price Predictions:**
+    - RandomForest model for price prediction across all metros
+    - 25 years of housing data (2000-2025)
+    - ML-derived appreciation rates replace static historical averages
 
     **v2.0 - Multi-Metro Edition:**
     - Multiple metro areas across Texas and Florida
