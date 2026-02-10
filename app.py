@@ -168,7 +168,7 @@ else:
 
 # AI model accuracy indicator
 if HAS_ML_MODELS:
-    st.markdown("*AI-powered predictions • 99.7% price accuracy • 98.9% appreciation accuracy*")
+    st.markdown("*AI-powered predictions • 97.4% forward-validated accuracy (2.57% MAPE)*")
 st.markdown("---")
 
 # =============================================================================
