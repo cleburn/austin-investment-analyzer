@@ -1,7 +1,7 @@
-# Metro area configuration for Investment Analyzer v2.0
+# Metro area configuration for Investment Analyzer v2.2
 # Last updated: February 2026
 
-version: "2.0"
+version: "2.2"
 default_metro: "austin"
 
 metros:
