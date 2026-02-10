@@ -1,5 +1,5 @@
 """
-Real Estate Investment Analyzer v2.0 - Data Processing Script
+Real Estate Investment Analyzer v2.2 - Data Processing Script
 Processes Zillow and Airbnb data for multiple metro areas.
 """
 
@@ -460,7 +460,7 @@ def main():
     args = parser.parse_args()
 
     print("="*80)
-    print("REAL ESTATE INVESTMENT ANALYZER v2.0 - DATA PROCESSING")
+    print("REAL ESTATE INVESTMENT ANALYZER v2.2 - DATA PROCESSING")
     print("="*80)
     print(f"\nStarting analysis at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
