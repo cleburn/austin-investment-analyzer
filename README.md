@@ -122,7 +122,7 @@ The tool combines three public datasets to create a complete picture:
 2. **Zillow Observed Rent Index (ZORI)** - Long-term rental rates by city
 3. **Inside Airbnb** - Short-term rental listings with occupancy and income data (where available)
 
-### Analysis Engine (v2.0)
+### Analysis Engine (v2.2)
 For each neighborhood, the tool calculates:
 
 **Cash Flow Strategy Metrics:**
@@ -161,7 +161,7 @@ Neighborhoods are ranked by the metric that matters most to your strategy:
 
 ---
 
-## Key Insights from Current Data (v2.0)
+## Key Insights from Current Data (v2.2)
 
 **Multi-Metro Market Reality (as of December 2025):**
 - **Rent-to-price ratios vary significantly by market** - Texas markets range from 0.55-0.95% monthly; Florida markets from 0.40-0.80%
