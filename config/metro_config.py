@@ -42,7 +42,7 @@ class MetroConfig:
     def get_ltr_rate(self, price: float) -> float:
         """Get the LTR rent-to-price rate for a given property price."""
         for tier in self.ltr_tiers:
-            if tier.max_price is None or price < tier.max_price:
+            if tier.max_price is None or price <= tier.max_price:
                 return tier.rate
         # Fallback to last tier if price exceeds all
         return self.ltr_tiers[-1].rate

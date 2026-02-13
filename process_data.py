@@ -226,7 +226,7 @@ def calculate_total_roi(row, hold_years, rental_type, interest_rate, down_paymen
         'principal_paydown': principal_paydown,
         'total_return': total_return,
         'roi_pct': roi_pct,
-        'annualized_roi': ((1 + roi_pct/100) ** (1/hold_years) - 1) * 100
+        'annualized_roi': ((max(0, 1 + roi_pct/100)) ** (1/hold_years) - 1) * 100
     })
 
 
@@ -253,10 +253,13 @@ def process_metro(metro_key: str, config: MetroConfig, df_housing: pd.DataFrame,
     print(f"{'='*60}")
 
     # Filter housing data for this metro (supports multiple cities)
+    # Filter by both city AND state to avoid pulling same-named cities from other states
+    # (e.g., Richmond TX vs Richmond VA, Arlington TX vs Arlington VA)
     cities_to_include = config.get_zillow_cities()
     df_metro_housing = df_housing[
         (df_housing['RegionType'] == 'neighborhood') &
-        (df_housing['City'].isin(cities_to_include))
+        (df_housing['City'].isin(cities_to_include)) &
+        (df_housing['State'] == config.state)
     ].copy()
 
     if len(df_metro_housing) == 0:
@@ -316,11 +319,11 @@ def process_metro(metro_key: str, config: MetroConfig, df_housing: pd.DataFrame,
 
     # Prepare housing data for merge
     df_housing_merge = df_metro_housing[[
-        'RegionName', 'current_price', 'baseline_cagr', 'recovery_cagr',
+        'RegionName', 'City', 'current_price', 'baseline_cagr', 'recovery_cagr',
         'peak_price_2022', 'distance_from_peak'
     ]].copy()
     df_housing_merge.columns = [
-        'neighborhood', 'current_price', 'baseline_cagr', 'recovery_cagr',
+        'neighborhood', 'city', 'current_price', 'baseline_cagr', 'recovery_cagr',
         'peak_price_2022', 'distance_from_peak'
     ]
     df_housing_merge['neighborhood'] = df_housing_merge['neighborhood'].astype(str)

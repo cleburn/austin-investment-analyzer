@@ -596,8 +596,8 @@ if analyze_button:
                 # Get ML-predicted appreciation rates (direct model predictions preferred)
                 ml_rates = ml_predictor.get_appreciation_rates_by_name(rate_type='predicted')
 
-                # Create lookup key for each neighborhood
-                df_filtered['_ml_key'] = df_filtered['neighborhood'] + '_' + df_filtered['metro']
+                # Create lookup key for each neighborhood (city disambiguates duplicates)
+                df_filtered['_ml_key'] = df_filtered['neighborhood'] + '_' + df_filtered['city'] + '_' + df_filtered['metro']
 
                 # Map ML rates, falling back to baseline_cagr where not available
                 df_filtered['appreciation_rate'] = df_filtered['_ml_key'].map(ml_rates)
@@ -666,7 +666,7 @@ if analyze_button:
 
         total_return = cumulative_cf + appreciation_gain + principal_paydown
         df_filtered['calc_total_roi'] = (total_return / total_invested) * 100
-        df_filtered['calc_annualized_roi'] = ((1 + df_filtered['calc_total_roi']/100) ** (1/hold_period) - 1) * 100
+        df_filtered['calc_annualized_roi'] = ((1 + df_filtered['calc_total_roi']/100).clip(lower=0) ** (1/hold_period) - 1) * 100
 
     # Sort by strategy
     if "Cash Flow" in strategy:
@@ -903,7 +903,7 @@ if analyze_button:
                 st.markdown("*Sell (w/ Cap Gains Tax):*")
                 # Long-term cap gains tax (15% for most investors)
                 # Note: Investment property, no primary residence exclusion
-                cap_gains_tax = appreciation_gain * 0.15
+                cap_gains_tax = max(0, appreciation_gain * 0.15)
 
                 net_proceeds = future_value - remaining_balance - cap_gains_tax - (future_value * 0.06)  # 6% selling costs
 

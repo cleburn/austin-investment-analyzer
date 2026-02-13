@@ -96,9 +96,11 @@ data/processed/ml_data_v3.pkl                        # Training data
 - Prevents unrealistic depreciation to $0 over long holds
 
 **4. Metro Key Matching:**
+- Keys are `{neighborhood}_{city}_{display_metro}` (e.g., `Downtown_Dallas_dallas`)
+- City is included to disambiguate duplicate neighborhood names within a metro
 - Predictions use `display_metro` (dallas, fort_worth, miami, fort_lauderdale)
 - NOT `training_metro` (dfw, south_florida)
-- This enables 71.4% key matching between predictions and app data
+- Key format must match across: predictor.py, app.py, and the predictions CSV
 
 **5. Price Filter:**
 - Only neighborhoods within $170k-$1M get ML predictions
@@ -131,6 +133,14 @@ app.py (uses predictions for ROI calculations)
 - miami, fort_lauderdale, tampa, orlando, jacksonville
 
 **Removed:** Abilene (Feb 2026) — only 11 neighborhoods, 7.90% MAPE in forward validation (3x worse than average). Too small a sample for reliable predictions.
+
+### Important Data Processing Details
+
+- **State filtering**: process_data.py filters Zillow national data by both City AND State to prevent pulling same-named cities from wrong states (e.g., Richmond TX vs Richmond VA)
+- **Annualized ROI clamping**: The annualized ROI formula clamps `(1 + roi/100)` to a floor of 0 before exponentiation to prevent complex/NaN results when total ROI < -100%
+- **Capital gains tax floor**: Sell scenario caps `cap_gains_tax` at 0 (no tax credit for losses)
+- **LTR tier boundaries**: `get_ltr_rate()` uses `<=` for tier boundaries so exact threshold prices match their intended tier
+- **Neighborhood identity**: `city` column is included in neighborhoods_multi_metro.csv and used in ML key matching to avoid duplicate-name collisions
 
 ### Known Limitations
 

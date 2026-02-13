@@ -68,9 +68,11 @@ class AppreciationPredictor:
             try:
                 self._predictions_data = pd.read_csv(self.predictions_path)
 
-                # Create name+metro lookup (use display_metro to match app data)
+                # Create name+city+metro lookup (use display_metro to match app data)
+                # City disambiguates duplicate neighborhood names within a metro
                 for _, row in self._predictions_data.iterrows():
-                    key = f"{row['neighborhood_name']}_{row['display_metro']}"
+                    city = row.get('city', '')
+                    key = f"{row['neighborhood_name']}_{city}_{row['display_metro']}"
                     self._name_to_prediction[key] = float(row['predicted_1yr_appreciation'])
 
                 print(f"Loaded {len(self._name_to_prediction)} appreciation predictions")
@@ -171,6 +173,7 @@ class AppreciationPredictor:
         self,
         neighborhood_name: str,
         metro: str,
+        city: str = "",
         use_predicted: bool = True
     ) -> Optional[float]:
         """
@@ -179,6 +182,7 @@ class AppreciationPredictor:
         Args:
             neighborhood_name: Neighborhood name
             metro: Metro identifier
+            city: City name (disambiguates duplicate neighborhood names)
             use_predicted: If True, prefer direct model predictions
 
         Returns:
@@ -187,7 +191,7 @@ class AppreciationPredictor:
         if not self.is_available():
             return None
 
-        key = f"{neighborhood_name}_{metro}"
+        key = f"{neighborhood_name}_{city}_{metro}"
 
         if use_predicted and key in self._name_to_prediction:
             return self._name_to_prediction[key]
