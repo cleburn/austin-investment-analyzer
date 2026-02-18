@@ -16,6 +16,7 @@ warnings.filterwarnings('ignore')
 sys.path.insert(0, str(Path(__file__).parent))
 
 from config.metro_config import get_config_loader, MetroConfig
+from config.zillow_filter import filter_zillow_for_metro
 
 # =============================================================================
 # CONSTANTS (Shared across all metros)
@@ -252,15 +253,9 @@ def process_metro(metro_key: str, config: MetroConfig, df_housing: pd.DataFrame,
     print(f"Processing: {config.display_name}")
     print(f"{'='*60}")
 
-    # Filter housing data for this metro (supports multiple cities)
-    # Filter by both city AND state to avoid pulling same-named cities from other states
-    # (e.g., Richmond TX vs Richmond VA, Arlington TX vs Arlington VA)
+    # Filter housing data for this metro using shared utility (city+state from metros.yaml)
     cities_to_include = config.get_zillow_cities()
-    df_metro_housing = df_housing[
-        (df_housing['RegionType'] == 'neighborhood') &
-        (df_housing['City'].isin(cities_to_include)) &
-        (df_housing['State'] == config.state)
-    ].copy()
+    df_metro_housing = filter_zillow_for_metro(df_housing, metro_key)
 
     if len(df_metro_housing) == 0:
         print(f"  WARNING: No neighborhoods found for {', '.join(cities_to_include)}")

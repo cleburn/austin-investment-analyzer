@@ -184,7 +184,7 @@ Neighborhoods are ranked by the metric that matters most to your strategy:
 
 ### Current Version (v2.2 - Forward-Validated Predictions)
 **New in v2.2:**
-- Forward-validated against Dec 2025 actuals (2.57% MAPE)
+- Forward-validated against Nov 2025 actuals (2.63% MAPE)
 - Removed Abilene metro (insufficient sample size for reliable predictions)
 - Established monthly forward-validation protocol for ongoing model monitoring
 
@@ -259,6 +259,6 @@ This project is open source and available for educational and personal use. Data
 
 ---
 
-**Last Updated:** February 6, 2026
+**Last Updated:** February 18, 2026
 **Version:** 2.2
-**Status:** Production - ML predictions with 97.4% accuracy (2.57% MAPE)
+**Status:** Production - ML predictions with 97.4% accuracy (2.63% MAPE)

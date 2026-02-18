@@ -5,7 +5,7 @@ This module provides ML-predicted appreciation rates for the investment analysis
 
 Model C (24-month lookback):
 - RandomForest price prediction model
-- Trained on 2002-2024 data (36,681 examples)
+- Trained on 2002-2024 data (36,370 examples)
 - Forward validated: 2.63% MAPE on November 2025
 - 24-month minimum history requirement
 - 14 features (cagr_2yr instead of cagr_3yr/cagr_5yr)

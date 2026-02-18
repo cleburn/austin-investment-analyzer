@@ -19,9 +19,9 @@
   "min_history_months": 24,
   "model_type": "RandomForestRegressor",
   "training_years": "2002-2024",
-  "forward_validation_mape": 2.626765660144428,
-  "forward_validation_r2": 0.991489817355042,
-  "n_training_examples": 36681,
-  "n_predictions": 3684,
-  "created": "2026-01-01T21:09:17.432304"
+  "forward_validation_mape": 2.628317125165262,
+  "forward_validation_r2": 0.9917308473262979,
+  "n_training_examples": 36370,
+  "n_predictions": 3666,
+  "created": "2026-02-18T12:33:51.970086"
 }

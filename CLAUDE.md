@@ -45,15 +45,15 @@ Real estate investment analysis app with ML-powered appreciation predictions. He
 
 **Architecture:**
 - **Type**: RandomForest price prediction model
-- **Training Data**: 2002-2024 (36,681 examples)
+- **Training Data**: 2002-2024 (36,370 examples)
 - **Price Range**: $170,000 - $1,000,000 (training population bounds)
 - **Min History**: 24 months of price data required
 - **Features**: 14 features including cagr_2yr (not 3yr/5yr due to lookback constraint)
 
-**Forward Validation (December 2025):**
-- **MAPE**: 2.57% (excellent, consistent with Nov 2025 validation of 2.63%)
+**Forward Validation (November 2025):**
+- **MAPE**: 2.63%
 - **R²**: 0.99
-- **Coverage**: 4,172 neighborhoods with predictions
+- **Coverage**: 3,666 neighborhoods with predictions
 
 **Appreciation Derivation:**
 ```
@@ -67,6 +67,7 @@ app.py                                    # Main Streamlit app
 process_data.py                           # Data processing script
 config/metros.yaml                        # Metro configuration
 config/metro_config.py                    # Config loader
+config/zillow_filter.py                   # Shared Zillow data filtering utility
 
 ml/models/predictor.py                    # Appreciation predictor (loads CSV)
 ml/artifacts/model_c/price_model.joblib   # Trained Model C
@@ -76,7 +77,6 @@ notebooks/08_clean_pipeline_v2.ipynb      # Canonical ML pipeline
 
 data/processed/appreciation_predictions_current.csv  # Pre-computed predictions
 data/processed/neighborhoods_multi_metro.csv         # App neighborhood data
-data/processed/ml_data_v3.pkl                        # Training data
 ```
 
 ### Critical Implementation Details
@@ -111,6 +111,8 @@ data/processed/ml_data_v3.pkl                        # Training data
 ```
 Zillow ZHVI data (raw)
     ↓
+config/zillow_filter.py (metro filtering via metros.yaml)
+    ↓
 08_clean_pipeline_v2.ipynb (feature extraction, model training)
     ↓
 appreciation_predictions_current.csv (pre-computed)
@@ -136,7 +138,7 @@ app.py (uses predictions for ROI calculations)
 
 ### Important Data Processing Details
 
-- **State filtering**: process_data.py filters Zillow national data by both City AND State to prevent pulling same-named cities from wrong states (e.g., Richmond TX vs Richmond VA)
+- **State filtering**: Shared utility (`config/zillow_filter.py`) and process_data.py filter Zillow data by City AND State using metros.yaml as the source of truth, preventing same-named cities from wrong states (e.g., Richmond TX vs Richmond VA)
 - **Annualized ROI clamping**: The annualized ROI formula clamps `(1 + roi/100)` to a floor of 0 before exponentiation to prevent complex/NaN results when total ROI < -100%
 - **Capital gains tax floor**: Sell scenario caps `cap_gains_tax` at 0 (no tax credit for losses)
 - **LTR tier boundaries**: `get_ltr_rate()` uses `<=` for tier boundaries so exact threshold prices match their intended tier
@@ -177,9 +179,8 @@ Before updating the app data, test how well the existing model predicts the new 
 4. Identify any metros or neighborhoods with degraded accuracy
 5. Decide: if model still performs well, proceed to update; if gaps emerge, investigate improvements first
 
-**Baseline benchmarks (Dec 2025 validation):**
-- Overall MAPE: 2.57%, R²: 0.9906
-- 87.5% of neighborhoods within 5% error
+**Baseline benchmarks (Nov 2025 validation):**
+- Overall MAPE: 2.63%, R²: 0.9917
 - Weakest metro (excluding removed): Fort Lauderdale at 3.17% MAPE
 
 ### Step 2: Update Data and Regenerate Predictions

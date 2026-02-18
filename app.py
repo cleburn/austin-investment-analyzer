@@ -168,7 +168,7 @@ else:
 
 # AI model accuracy indicator
 if HAS_ML_MODELS:
-    st.markdown("*AI-powered predictions • 97.4% forward-validated accuracy (2.57% MAPE)*")
+    st.markdown("*AI-powered predictions • 97.4% forward-validated accuracy (2.63% MAPE)*")
 st.markdown("---")
 
 # =============================================================================
@@ -972,7 +972,7 @@ st.markdown("---")
 with st.expander("What's New in v2.2?"):
     st.markdown("""
     **v2.2 - Forward-Validated Predictions:**
-    - **97.4% Accuracy:** Predictions validated against Dec 2025 actual market data (2.57% MAPE)
+    - **97.4% Accuracy:** Predictions validated against Nov 2025 actual market data (2.63% MAPE)
     - **ML-Powered Forecasts:** Predicts future appreciation instead of assuming past trends continue
     - **25 Years of Learning:** Model trained on housing outcomes from 2002-2024
 
