@@ -179,9 +179,15 @@ Before updating the app data, test how well the existing model predicts the new 
 4. Identify any metros or neighborhoods with degraded accuracy
 5. Decide: if model still performs well, proceed to update; if gaps emerge, investigate improvements first
 
-**Baseline benchmarks (Nov 2025 validation):**
-- Overall MAPE: 2.63%, R²: 0.9917
-- Weakest metro (excluding removed): Fort Lauderdale at 3.17% MAPE
+**Baseline benchmarks (3-month forward validation, Feb 2026):**
+
+| Window               | MAPE  | MAE      | R²     | Within 5% |
+|----------------------|-------|----------|--------|-----------|
+| Nov 2025 (1-month)   | 2.63% | $10,112  | 0.9918 | 87.2%     |
+| Dec 2025 (2-month)   | 2.53% | $10,258  | 0.9912 | 88.6%     |
+| Jan 2026 (3-month)   | 2.59% | $10,782  | 0.9898 | 87.6%     |
+
+No model drift detected. Weakest metros: Tampa (~3.8% at 1-month, improves later), Fort Lauderdale (~3.1%). Direction accuracy: 70.6% → 65.1% over the window (expected for a 1-year-ahead model).
 
 ### Step 2: Update Data and Regenerate Predictions
 ```bash
@@ -204,5 +210,5 @@ Streamlit Cloud will auto-redeploy with new predictions.
 
 **Note:** The model file (`price_model.joblib`) stays local - only the predictions CSV and neighborhood data are pushed.
 
-### Step 3: Plan for Longer-Horizon Validation (Next: Jan-Mar 2026)
-When 3+ months of new data are available, run a longer-horizon validation to assess model drift and make intentional adjustments to the model's architecture if needed.
+### Step 3: Longer-Horizon Validation
+Next validation: ~Apr-May 2026 with data through Mar-Apr 2026 (6+ month window from training cutoff). Look for MAPE drift above 3.5% or R² below 0.98 as triggers for retraining.
