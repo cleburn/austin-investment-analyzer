@@ -142,9 +142,12 @@ def clean_airbnb_data(df_airbnb):
 
 def process_airbnb_for_metro(df_airbnb_clean):
     """Process cleaned Airbnb data into neighborhood aggregates."""
-    # Calculate occupancy
-    df_airbnb_clean['occupancy_rate'] = (
-        df_airbnb_clean['estimated_occupancy_l365d'] / df_airbnb_clean['availability_365'] * 100
+    # Calculate occupancy (guard against division by zero when availability_365 <= 0)
+    valid_availability = df_airbnb_clean['availability_365'] > 0
+    df_airbnb_clean['occupancy_rate'] = 0.0
+    df_airbnb_clean.loc[valid_availability, 'occupancy_rate'] = (
+        df_airbnb_clean.loc[valid_availability, 'estimated_occupancy_l365d']
+        / df_airbnb_clean.loc[valid_availability, 'availability_365'] * 100
     )
     df_airbnb_clean['occupancy_rate'] = df_airbnb_clean['occupancy_rate'].fillna(0)
     df_airbnb_clean.loc[df_airbnb_clean['occupancy_rate'] > 100, 'occupancy_rate'] = 100
@@ -324,6 +327,11 @@ def process_metro(metro_key: str, config: MetroConfig, df_housing: pd.DataFrame,
     df_housing_merge['neighborhood'] = df_housing_merge['neighborhood'].astype(str)
 
     # Merge with Airbnb data
+    # NOTE: Join is on neighborhood name only — Airbnb data lacks a city column.
+    # This runs per-metro so cross-metro contamination doesn't occur, but
+    # same-named neighborhoods in different cities within one metro (e.g.,
+    # "Downtown" in Dallas vs Irving) will share STR metrics. This is a known
+    # limitation of the Inside Airbnb source data.
     if not airbnb_by_neighborhood.empty:
         df_merged = df_housing_merge.merge(
             airbnb_by_neighborhood,

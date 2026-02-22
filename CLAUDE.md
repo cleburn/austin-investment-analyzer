@@ -142,13 +142,15 @@ app.py (uses predictions for ROI calculations)
 - **Annualized ROI clamping**: The annualized ROI formula clamps `(1 + roi/100)` to a floor of 0 before exponentiation to prevent complex/NaN results when total ROI < -100%
 - **Capital gains tax floor**: Sell scenario caps `cap_gains_tax` at 0 (no tax credit for losses)
 - **LTR tier boundaries**: `get_ltr_rate()` uses `<=` for tier boundaries so exact threshold prices match their intended tier
-- **Neighborhood identity**: `city` column is included in neighborhoods_multi_metro.csv and used in ML key matching to avoid duplicate-name collisions
+- **Neighborhood identity**: `city` column is included in neighborhoods_multi_metro.csv and used in ML key matching to avoid duplicate-name collisions. Both prediction and historical fallback keys use `{name}_{city}_{metro}` format.
+- **Occupancy guard**: `process_data.py` sets occupancy to 0 when `availability_365 <= 0` to prevent division-by-zero inflation in STR income calculations
 
 ### Known Limitations
 
 1. **Price bounds**: Homes outside $170k-$1M don't get ML predictions
 2. **1-year horizon**: Model predicts 1 year ahead; multi-year is extrapolated with caps
 3. **Fort Worth outliers**: Several Fort Worth neighborhoods show >20% prediction error; may need investigation when more data is available
+4. **STR merge within metros**: Airbnb data lacks a city column, so same-named neighborhoods in different cities within one metro (e.g., "Downtown" in Dallas vs Irving) share STR metrics. Cross-metro contamination doesn't occur (merge runs per display metro).
 
 ### Future Enhancements (Deferred)
 

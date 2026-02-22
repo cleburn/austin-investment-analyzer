@@ -95,9 +95,11 @@ class AppreciationPredictor:
                 if len(df_2025) > 0:
                     self._historical_data = df_2025
 
-                    # Create name+metro lookup for historical CAGRs
+                    # Create name+city+metro lookup for historical CAGRs
+                    # (matches prediction key format: {name}_{city}_{metro})
                     for _, row in df_2025.iterrows():
-                        key = f"{row['neighborhood_name']}_{row['metro']}"
+                        city = row.get('city', '')
+                        key = f"{row['neighborhood_name']}_{city}_{row['metro']}"
                         if pd.notna(row.get('cagr_5yr')):
                             self._name_to_historical[key] = float(row['cagr_5yr'])
 

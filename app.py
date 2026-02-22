@@ -188,12 +188,16 @@ budget_min, budget_max = st.sidebar.slider(
     format="$%d"
 )
 
-# Neighborhood filter
+# Neighborhood filter (with city context to disambiguate same-named neighborhoods)
 st.sidebar.subheader("Neighborhood Filter")
-all_neighborhoods = sorted(df['neighborhood'].unique().tolist())
+nb_city_df = df[['neighborhood', 'city']].drop_duplicates().sort_values(['neighborhood', 'city'])
+nb_display_to_pair = {}
+for _, row in nb_city_df.iterrows():
+    label = f"{row['neighborhood']} ({row['city']})"
+    nb_display_to_pair[label] = (row['neighborhood'], row['city'])
 neighborhood_filter = st.sidebar.multiselect(
     "Select Specific Neighborhoods (optional)",
-    options=all_neighborhoods,
+    options=sorted(nb_display_to_pair.keys()),
     default=[],
     help="Leave empty to search all neighborhoods, or select specific ones to analyze"
 )
@@ -436,9 +440,12 @@ if analyze_button:
             (df['current_price'] <= budget_max)
         ].copy()
 
-        # Apply neighborhood filter if specified
+        # Apply neighborhood filter if specified (matches on neighborhood + city pair)
         if neighborhood_filter:
-            df_filtered = df_filtered[df_filtered['neighborhood'].isin(neighborhood_filter)]
+            selected_pairs = {nb_display_to_pair[label] for label in neighborhood_filter}
+            df_filtered = df_filtered[
+                df_filtered.apply(lambda r: (r['neighborhood'], r['city']) in selected_pairs, axis=1)
+            ]
             if len(df_filtered) == 0:
                 st.warning(f"None of the selected neighborhoods are in the ${budget_min:,}-${budget_max:,} price range.")
                 st.info(f"Try adjusting your budget or selecting different neighborhoods.")

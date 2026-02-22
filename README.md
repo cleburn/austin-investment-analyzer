@@ -157,7 +157,7 @@ For each neighborhood, the tool calculates:
 Neighborhoods are ranked by the metric that matters most to your strategy:
 - **Cash Flow investors:** Sorted by highest monthly profit (STR or LTR)
 - **Total ROI investors:** Sorted by best risk-adjusted returns over hold period
-- **Appreciation investors:** Sorted by strongest weighted historical growth (2000-2025 CAGR)
+- **Appreciation investors:** Sorted by strongest ML-predicted appreciation (historical CAGR fallback where ML coverage unavailable)
 
 ---
 
