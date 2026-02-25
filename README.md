@@ -116,11 +116,12 @@ Then it:
 - LTR-only analysis: Houston, San Antonio, Waco, Miami, Orlando, Tampa, Jacksonville
 
 ### Data Sources
-The tool combines three public datasets to create a complete picture:
+The tool combines two public datasets to create a complete picture:
 
 1. **Zillow Home Value Index (ZHVI)** - Neighborhood-level median home prices from 2000-2025
-2. **Zillow Observed Rent Index (ZORI)** - Long-term rental rates by city
-3. **Inside Airbnb** - Short-term rental listings with occupancy and income data (where available)
+2. **Inside Airbnb** - Short-term rental listings with occupancy and income data (where available)
+
+Long-term rental (LTR) estimates use metro-specific rent-to-price tiers calibrated to each market's price range.
 
 ### Analysis Engine (v2.2)
 For each neighborhood, the tool calculates:
@@ -156,7 +157,7 @@ For each neighborhood, the tool calculates:
 ### Ranking System
 Neighborhoods are ranked by the metric that matters most to your strategy:
 - **Cash Flow investors:** Sorted by highest monthly profit (STR or LTR)
-- **Total ROI investors:** Sorted by best risk-adjusted returns over hold period
+- **Total ROI investors:** Sorted by highest total ROI over hold period
 - **Appreciation investors:** Sorted by strongest ML-predicted appreciation (historical CAGR fallback where ML coverage unavailable)
 
 ---

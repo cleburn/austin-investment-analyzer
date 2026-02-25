@@ -691,6 +691,14 @@ if analyze_button:
 
     df_sorted = df_filtered.sort_values(sort_col, ascending=False)
 
+    # Select top results: best-in-each-metro for multi-metro, top 5 overall otherwise
+    if is_multi_metro and not neighborhood_filter:
+        # Take the #1 neighborhood from each metro, then rank across metros
+        top_results = df_sorted.groupby('metro').head(1)
+        top_results = top_results.sort_values(sort_col, ascending=False).head(5)
+    else:
+        top_results = df_sorted.head(5)
+
     # Summary metrics
     st.header("Investment Analysis Summary")
 
@@ -719,14 +727,16 @@ if analyze_button:
 
     st.markdown("---")
 
-    # Top 5 neighborhoods
-    st.header(f"Top 5 Neighborhoods: {strategy}")
-    st.caption("Click any result to expand full investment details")
+    # Top neighborhoods
+    if is_multi_metro and not neighborhood_filter:
+        st.header(f"Top {len(top_results)} Neighborhoods: {strategy}")
+        st.caption("Best in each metro \u2014 click any result to expand full investment details")
+    else:
+        st.header(f"Top {len(top_results)} Neighborhoods: {strategy}")
+        st.caption("Click any result to expand full investment details")
 
-    top_5 = df_sorted.head(5)
-
-    for idx, row in top_5.iterrows():
-        rank = top_5.index.get_loc(idx) + 1
+    for idx, row in top_results.iterrows():
+        rank = top_results.index.get_loc(idx) + 1
 
         # Build key metric string based on strategy
         if "Cash Flow" in strategy:
@@ -1005,5 +1015,5 @@ else:
 st.markdown("""
 **Created by:** [Cleburn Walker](https://linkedin.com/in/cleburnwalker) | [GitHub](https://github.com/cleburn)
 
-**Data Sources:** Zillow ZHVI (Housing Prices), Zillow ZORI (Rent Prices), Inside Airbnb
+**Data Sources:** Zillow ZHVI (Housing Prices), Inside Airbnb
 """)
