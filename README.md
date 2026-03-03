@@ -63,7 +63,7 @@ No installation required - just click and start analyzing neighborhoods!
 5. **Use the tool:**
    - The app will open automatically in your browser at `http://localhost:8501`
    - Filter by state and metro areas, adjust budget range, select investment strategy
-   - Click "Find Best Neighborhoods" to see your top 5 recommendations
+   - Click "Find Best Neighborhoods" to see your top recommendations
 
 ---
 
@@ -91,7 +91,7 @@ The analyzer takes your inputs:
 Then it:
 - Analyzes 3,000+ neighborhoods across 11 metros
 - Ranks them based on your chosen strategy
-- Returns the **top 5 neighborhoods** with comprehensive metrics:
+- Returns the **top neighborhoods** with comprehensive metrics:
   - Monthly cash flow (STR and LTR with realistic rent estimates)
   - Total ROI over your hold period (includes cash flow + equity + appreciation)
   - Historical appreciation rates (weighted 2000-2025 CAGR)
@@ -177,7 +177,7 @@ Neighborhoods are ranked by the metric that matters most to your strategy:
 - **STR data available:** 4 metros (Austin, Dallas, Fort Worth, Fort Lauderdale)
 - **Data through:** December 2025
 
-**Key Takeaway:** v2.0 reveals that investment viability varies significantly by metro. While major markets like Austin and Miami show challenging pre-tax cash flow, smaller Texas markets and strategic suburbs offer better opportunities. Budget flexibility and favorable financing terms unlock positive cash flow in markets like Waco and San Antonio.
+**Key Takeaway:** Investment viability varies significantly by metro. While major markets like Austin and Miami show challenging pre-tax cash flow, smaller Texas markets and strategic suburbs offer better opportunities. Budget flexibility and favorable financing terms unlock positive cash flow in markets like Waco and San Antonio.
 
 ---
 
@@ -260,6 +260,6 @@ This project is open source and available for educational and personal use. Data
 
 ---
 
-**Last Updated:** February 18, 2026
+**Last Updated:** March 2, 2026
 **Version:** 2.2
 **Status:** Production - ML predictions with 97.4% accuracy (2.63% MAPE)

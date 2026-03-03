@@ -728,15 +728,13 @@ if analyze_button:
     st.markdown("---")
 
     # Top neighborhoods
+    st.header(f"Top {len(top_results)} Neighborhoods: {strategy}")
     if is_multi_metro and not neighborhood_filter:
-        st.header(f"Top {len(top_results)} Neighborhoods: {strategy}")
         st.caption("Best in each metro \u2014 click any result to expand full investment details")
     else:
-        st.header(f"Top {len(top_results)} Neighborhoods: {strategy}")
         st.caption("Click any result to expand full investment details")
 
-    for idx, row in top_results.iterrows():
-        rank = top_results.index.get_loc(idx) + 1
+    for rank, (idx, row) in enumerate(top_results.iterrows(), start=1):
 
         # Build key metric string based on strategy
         if "Cash Flow" in strategy:

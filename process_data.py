@@ -330,14 +330,15 @@ def process_metro(metro_key: str, config: MetroConfig, df_housing: pd.DataFrame,
     # Keep the row with more historical data (more non-null date columns).
     dupes = df_housing_merge.duplicated(subset=['neighborhood', 'city'], keep=False)
     if dupes.any():
-        n_dupes = dupes.sum() - len(df_housing_merge[dupes].drop_duplicates(['neighborhood', 'city']))
+        n_before = len(df_housing_merge)
         # Count non-null date columns from source data to determine which has longer history
         history_len = df_metro_housing[date_columns].notna().sum(axis=1)
         df_housing_merge['_history_len'] = history_len.values
-        df_housing_merge = df_housing_merge.sort_values('_history_len', ascending=False)
-        df_housing_merge = df_housing_merge.drop_duplicates(subset=['neighborhood', 'city'], keep='first')
-        df_housing_merge = df_housing_merge.drop(columns=['_history_len'])
-        print(f"  Deduplicated {n_dupes} neighborhood(s) with duplicate (name, city) keys")
+        df_housing_merge = (df_housing_merge
+            .sort_values('_history_len', ascending=False)
+            .drop_duplicates(subset=['neighborhood', 'city'], keep='first')
+            .drop(columns=['_history_len']))
+        print(f"  Deduplicated {n_before - len(df_housing_merge)} neighborhood(s) with duplicate (name, city) keys")
 
     # Merge with Airbnb data
     # NOTE: Join is on neighborhood name only — Airbnb data lacks a city column.
