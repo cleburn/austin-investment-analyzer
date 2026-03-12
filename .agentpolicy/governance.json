@@ -1,0 +1,236 @@
+{
+  "$schema": "https://schemas.agentpolicy.dev/v0.1.0/governance.schema.json",
+  "version": "0.1.0",
+  "autonomy": {
+    "domains": [
+      {
+        "name": "code-changes",
+        "level": "autonomous",
+        "scope": "Python files, Streamlit components, documentation. Agents may freely modify within the scope of their role.",
+        "conditions": [
+          "Must pass all tests",
+          "No lint errors"
+        ]
+      },
+      {
+        "name": "documentation",
+        "level": "autonomous",
+        "scope": "README, docstrings, inline comments, agent-facing docs."
+      },
+      {
+        "name": "data-pipeline-execution",
+        "level": "autonomous",
+        "scope": "Running the existing ingestion and processing pipeline on new quarterly data when performance metrics hold or improve.",
+        "conditions": [
+          "Forward-validation shows equal or better performance than previous quarter"
+        ]
+      },
+      {
+        "name": "model-retraining",
+        "level": "autonomous",
+        "scope": "Retrain model on all existing data including new quarterly data and deploy.",
+        "conditions": [
+          "Forward-validation metrics meet or exceed thresholds (MAPE <= 3.5%, R² >= 0.98)",
+          "No changes to feature engineering or model design",
+          "Deployed through QA gate"
+        ]
+      },
+      {
+        "name": "dependency-additions",
+        "level": "advisory",
+        "scope": "Any new pip dependency or version change to requirements.txt. Propose and wait for owner approval."
+      },
+      {
+        "name": "financial-calculation-engine",
+        "level": "conservative",
+        "scope": "Any code that computes appreciation, projections, price predictions, or scoring. Changes must be discussed with owner before implementation.",
+        "conditions": [
+          "Propose change with rationale",
+          "Wait for explicit owner approval"
+        ]
+      },
+      {
+        "name": "protected-patterns",
+        "level": "forbidden",
+        "scope": "Hardcoded sanity caps, price bounds, projection caps, and performance thresholds. Only modifiable with explicit owner approval after agent flags a concern.",
+        "conditions": [
+          "Agent may flag a concern or recommendation",
+          "Must receive explicit owner approval before any modification"
+        ]
+      },
+      {
+        "name": "credentials",
+        "level": "forbidden",
+        "scope": ".env files, API keys, secrets, any credential or authentication material. Never read, write, log, or expose."
+      },
+      {
+        "name": "feature-engineering",
+        "level": "conservative",
+        "scope": "Any changes to feature extraction, feature selection, or feature transformation logic. Discuss with owner before implementing."
+      },
+      {
+        "name": "model-architecture",
+        "level": "conservative",
+        "scope": "Any changes to model type, hyperparameter search strategy, or ensemble design. Discuss with owner before implementing."
+      },
+      {
+        "name": "testing-scaffold",
+        "level": "autonomous",
+        "scope": "QA agent has authority to build and maintain the testing scaffold, test suites, and linting configuration."
+      }
+    ]
+  },
+  "file_permissions": {
+    "global_rules": [
+      {
+        "pattern": ".env",
+        "permission": "forbidden",
+        "reason": "Credentials. No agent may read, write, or reference."
+      },
+      {
+        "pattern": "*.credentials*",
+        "permission": "forbidden",
+        "reason": "Credentials. No agent may read, write, or reference."
+      }
+    ],
+    "role_overrides": {
+      "data-engineer": [
+        {
+          "pattern": "data/raw/**",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "data/processed/**",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "*.csv",
+          "permission": "read-write",
+          "scope": "data/ directory only"
+        },
+        {
+          "pattern": "zillow_filter.py",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "process_data.py",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "metros.yaml",
+          "permission": "read"
+        }
+      ],
+      "analyst": [
+        {
+          "pattern": "data/**",
+          "permission": "read-only"
+        },
+        {
+          "pattern": "*.csv",
+          "permission": "read-only"
+        },
+        {
+          "pattern": "ml/**",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "notebooks/**",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "predictor.py",
+          "permission": "read-write"
+        }
+      ],
+      "qa": [
+        {
+          "pattern": "**/*.py",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "data/**",
+          "permission": "read-only"
+        },
+        {
+          "pattern": "*.csv",
+          "permission": "read-only"
+        },
+        {
+          "pattern": "tests/**",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "pyproject.toml",
+          "permission": "read-write"
+        },
+        {
+          "pattern": "ruff.toml",
+          "permission": "read-write"
+        },
+        {
+          "pattern": ".github/**",
+          "permission": "read-write"
+        }
+      ]
+    }
+  },
+  "quality_gate": {
+    "required_checks": [
+      {
+        "name": "tests-pass",
+        "command": "pytest",
+        "description": "All tests must pass. Zero failures."
+      },
+      {
+        "name": "lint-clean",
+        "command": "ruff check .",
+        "description": "No lint errors. Zero violations."
+      }
+    ],
+    "enforcement": "All code changes must pass the quality gate before commit. QA agent is the final checkpoint and sole authority on whether the gate is met."
+  },
+  "escalation": {
+    "default": "When in doubt, ask the owner (Cleburn).",
+    "triggers": [
+      {
+        "condition": "Forward-validation shows degraded performance (MAPE > 3.5% or R² < 0.98)",
+        "action": "Analyst investigates root cause, considers solutions, then discusses with owner before implementing any fix."
+      },
+      {
+        "condition": "Proposed change to feature engineering or model design",
+        "action": "Discuss with owner. No implementation without explicit approval."
+      },
+      {
+        "condition": "Proposed change to any protected pattern (sanity caps, price bounds, projection logic, performance thresholds)",
+        "action": "Flag the concern with rationale to owner. No modification without explicit approval."
+      },
+      {
+        "condition": "Proposed new dependency",
+        "action": "Propose with justification. Wait for owner approval."
+      },
+      {
+        "condition": "Uncertainty about scope, intent, or correctness",
+        "action": "Ask the owner."
+      }
+    ]
+  },
+  "commit_authority": {
+    "policy": "Only the QA agent may commit and push to the repository. All other agents produce work products that QA reviews, tests, and gates before committing.",
+    "authorized_roles": [
+      "qa"
+    ]
+  },
+  "quarterly_cycle": {
+    "description": "Owner drops new Zillow ZHVI files into ~/Downloads/ quarterly. The Data Engineer ingests, the Analyst validates, and QA gates deployment.",
+    "steps": [
+      "Owner drops new ZHVI files in ~/Downloads/",
+      "Data Engineer ingests files into data/raw/, runs process_data.py, regenerates predictions in data/processed/",
+      "Analyst runs forward-validation against new data",
+      "If metrics hold or improve: Analyst retrains model on all data including new quarter, produces updated predictions",
+      "If metrics degrade: Analyst investigates, proposes fix, escalates to owner before implementing",
+      "QA runs full test suite and lint, reviews all changes",
+      "QA commits and pushes if quality gate passes"
+    ]
+  }
+}

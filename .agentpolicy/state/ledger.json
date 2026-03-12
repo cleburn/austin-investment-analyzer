@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.agentpolicy.dev/v0.1.0/ledger.schema.json",
+  "version": "0.1.0",
+  "entries": [],
+  "write_protocol": {
+    "who_writes": "All agents append entries for their actions. QA appends entries for commits and gate results.",
+    "format": {
+      "timestamp": "ISO 8601",
+      "agent": "Role name of the acting agent",
+      "action": "Brief description of what was done",
+      "scope": "Files or domains affected",
+      "outcome": "Result: success, failure, escalated, blocked",
+      "details": "Additional context, metrics, or rationale as needed"
+    },
+    "retention": "All entries retained indefinitely for audit trail",
+    "review": "Owner may review ledger at any time. QA reviews ledger as part of commit preparation."
+  }
+}

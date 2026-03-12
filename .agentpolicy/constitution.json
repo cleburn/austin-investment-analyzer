@@ -1,0 +1,79 @@
+{
+  "$schema": "https://schemas.agentpolicy.dev/v0.1.0/constitution.schema.json",
+  "version": "0.1.0",
+  "project": {
+    "name": "property-analyst-pro",
+    "description": "Real estate investment analyzer. Streamlit application that ingests Zillow ZHVI data, extracts features, trains a RandomForest model, and serves pre-computed metro-level appreciation predictions. Quarterly forward-validation protocol with conservative projection logic and sanity caps.",
+    "language": "python",
+    "framework": "streamlit",
+    "repository": "local",
+    "owner": "Cleburn"
+  },
+  "principles": [
+    {
+      "id": "accuracy",
+      "priority": 1,
+      "text": "Accuracy of financial calculations is non-negotiable. Every numerical output must be verifiably correct. The financial calculation engine, hardcoded sanity caps, and conservative projection logic are sacred — no modification without explicit owner approval."
+    },
+    {
+      "id": "source-citation",
+      "priority": 2,
+      "text": "All user-facing data must cite its source. Every prediction, metric, or statistic displayed in the app must be traceable to a named data source and vintage."
+    },
+    {
+      "id": "ui-simplicity",
+      "priority": 3,
+      "text": "Keep the UI simple. Users care about accurate, trustworthy results delivered through a clean experience. Do not add UI complexity unless it directly serves accuracy or trust."
+    }
+  ],
+  "protected_patterns": [
+    {
+      "id": "sanity-cap-appreciation",
+      "description": "Hardcoded appreciation sanity caps: -10% to +15%. Constitutional. Owner approval required to modify.",
+      "pattern": "appreciation bounds [-10%, +15%]"
+    },
+    {
+      "id": "multiyear-projection-cap",
+      "description": "Conservative multi-year projection logic: 7% annual cap, negative floor. Constitutional. Owner approval required to modify.",
+      "pattern": "projection cap 7%, negative floor"
+    },
+    {
+      "id": "price-bounds",
+      "description": "Hardcoded price bounds: $170,000 to $1,000,000. Constitutional. Owner approval required to modify.",
+      "pattern": "price bounds [$170k, $1M]"
+    },
+    {
+      "id": "performance-thresholds",
+      "description": "Model performance thresholds: MAPE <= 3.5%, R² >= 0.98. Used to gate quarterly retraining. Owner approval required to modify.",
+      "pattern": "MAPE <= 3.5%, R² >= 0.98"
+    }
+  ],
+  "stack": {
+    "runtime": "python",
+    "ui": "streamlit",
+    "ml": "scikit-learn (RandomForest)",
+    "data": "pandas, Zillow ZHVI CSVs",
+    "config": "metros.yaml"
+  },
+  "module_map": {
+    "app.py": "Streamlit entry point and UI layer",
+    "predictor.py": "Prediction serving — loads pre-computed CSV predictions and exposes them to the app",
+    "zillow_filter.py": "Data filtering and preprocessing of raw ZHVI data per metros.yaml config",
+    "process_data.py": "Full data processing pipeline: raw ZHVI → features → predictions CSV",
+    "ml/": "Model training, feature extraction, forward-validation logic",
+    "data/raw/": "Raw Zillow ZHVI data files (quarterly drops)",
+    "data/processed/": "Pre-computed predictions and processed feature CSVs",
+    "metros.yaml": "Configuration: target metro areas and parameters",
+    "notebooks/": "Canonical notebook for feature extraction, model training, and analysis"
+  },
+  "build": {
+    "install": "pip install -r requirements.txt",
+    "dev": "streamlit run app.py",
+    "test": "pytest",
+    "lint": "ruff check ."
+  },
+  "audience": {
+    "codebase": "Optimized for agent consumption first. Bare minimum human readability for owner audit and manual editing. Not user-facing.",
+    "application": "End users interact only with the Streamlit app. They expect good UX, accurate results, and trustworthy data."
+  }
+}
