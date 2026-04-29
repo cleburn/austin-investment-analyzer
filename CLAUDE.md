@@ -36,7 +36,7 @@
 
 ---
 
-## Project Status (Updated Feb 2026)
+## Project Status (Updated Apr 2026)
 
 ### Overview
 Real estate investment analysis app with ML-powered appreciation predictions. Helps users identify neighborhoods with strong ROI potential across Texas and Florida metros.
@@ -50,10 +50,10 @@ Real estate investment analysis app with ML-powered appreciation predictions. He
 - **Min History**: 24 months of price data required
 - **Features**: 14 features including cagr_2yr (not 3yr/5yr due to lookback constraint)
 
-**Forward Validation (November 2025):**
-- **MAPE**: 2.63%
-- **R²**: 0.99
-- **Coverage**: 3,666 neighborhoods with predictions
+**Forward Validation (Nov 2025 – Mar 2026, 5 months past training cutoff):**
+- **MAPE**: 2.45–2.63% (improving over the window)
+- **R²**: ≥ 0.99 across all months
+- **Coverage**: 4,197 neighborhoods with predictions (Mar 2026 snapshot)
 
 **Appreciation Derivation:**
 ```
@@ -151,6 +151,7 @@ app.py (uses predictions for ROI calculations)
 2. **1-year horizon**: Model predicts 1 year ahead; multi-year is extrapolated with caps
 3. **Fort Worth outliers**: Several Fort Worth neighborhoods show >20% prediction error; may need investigation when more data is available
 4. **STR merge within metros**: Airbnb data lacks a city column, so same-named neighborhoods in different cities within one metro (e.g., "Downtown" in Dallas vs Irving) share STR metrics. Cross-metro contamination doesn't occur (merge runs per display metro).
+5. **Inside Airbnb public CSV is no longer drop-in usable** (Apr 2026): the 2026-01-20 Dallas scrape returned an `listings.csv.gz` with `price`, `host_neighbourhood`, and `estimated_revenue_l365d` 100% blank — schema columns exist but values are empty. `process_data.py` requires both `price` (for STR income) and `host_neighbourhood` (for grouping). The Aug 2025 Airbnb files in `data/raw/` predate this change and remain the production source. Refreshing STR data now requires merging Inside Airbnb's `calendar.csv.gz` (per-listing nightly prices) onto the listings file and switching grouping to `neighbourhood_cleansed` — non-trivial pipeline change deferred to a future cycle.
 
 ### Future Enhancements (Deferred)
 
@@ -181,15 +182,17 @@ Before updating the app data, test how well the existing model predicts the new 
 4. Identify any metros or neighborhoods with degraded accuracy
 5. Decide: if model still performs well, proceed to update; if gaps emerge, investigate improvements first
 
-**Baseline benchmarks (3-month forward validation, Feb 2026):**
+**Baseline benchmarks (5-month forward validation, Apr 2026):**
 
-| Window               | MAPE  | MAE      | R²     | Within 5% |
-|----------------------|-------|----------|--------|-----------|
-| Nov 2025 (1-month)   | 2.63% | $10,112  | 0.9918 | 87.2%     |
-| Dec 2025 (2-month)   | 2.53% | $10,258  | 0.9912 | 88.6%     |
-| Jan 2026 (3-month)   | 2.59% | $10,782  | 0.9898 | 87.6%     |
+| Window               | MAPE  | MAE      | R²     | Within 5% | Direction |
+|----------------------|-------|----------|--------|-----------|-----------|
+| Nov 2025 (1-month)   | 2.63% | $10,112  | 0.9918 | 87.2%     | 70.6%     |
+| Dec 2025 (2-month)   | 2.53% | $10,258  | 0.9912 | 88.6%     | —         |
+| Jan 2026 (3-month)   | 2.58% | $10,889  | 0.9901 | 87.5%     | 63.9%     |
+| Feb 2026 (4-month)   | 2.54% | $10,690  | 0.9901 | 88.3%     | 61.2%     |
+| Mar 2026 (5-month)   | 2.45% | $10,191  | 0.9909 | 89.0%     | 59.0%     |
 
-No model drift detected. Weakest metros: Tampa (~3.8% at 1-month, improves later), Fort Lauderdale (~3.1%). Direction accuracy: 70.6% → 65.1% over the window (expected for a 1-year-ahead model).
+No aggregate drift — MAPE and R² actually improving over the window. Direction accuracy declining (70.6% → 59.0%) which is expected for a 1-year-trained model evaluated on 1-month gaps. Apr 2026 watchlist: **Waco** (n=13, MAPE creeping 3.86% → 5.51%, eyed for removal next cycle), **Jacksonville** (Mar 2026 spike to 4.42% MAPE, magnitude not direction error).
 
 ### Step 2: Update Data and Regenerate Predictions
 ```bash
@@ -213,4 +216,4 @@ Streamlit Cloud will auto-redeploy with new predictions.
 **Note:** The model file (`price_model.joblib`) stays local - only the predictions CSV and neighborhood data are pushed.
 
 ### Step 3: Longer-Horizon Validation
-Next validation: ~Apr-May 2026 with data through Mar-Apr 2026 (6+ month window from training cutoff). Look for MAPE drift above 3.5% or R² below 0.98 as triggers for retraining.
+Next validation: ~May-Jun 2026 with data through Apr-May 2026 (7+ month window from training cutoff). Look for MAPE drift above 3.5% or R² below 0.98 as triggers for retraining. Specific decision points for next cycle: remove Waco if MAPE keeps climbing, investigate Jacksonville magnitude error.
